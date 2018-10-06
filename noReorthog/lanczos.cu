@@ -20,10 +20,10 @@
 #include <math.h>
 #include "cublas.h"
 #include "cutil.h"
-#include <acml.h>
 #include <vector>
 #include "stencilMVM.h"
 
+#include <lapacke.h>
 
 typedef std::vector<float> floatVector;
 typedef std::vector<double> doubleVector;
@@ -290,7 +290,7 @@ bool CullumDevice(int i, float* aAlpha, float*aBeta, double* tempAlpha, double* 
 
 	doubleVector* currentCullum = new doubleVector();
 
-	dstebz_(&range, &order, &tempn, &vl, &vu, &il, &iu, &abstol, tempAlpha, tempBeta, &m, &nsplit, w, iblock, isplit, work, iwork, &info, 1, 1); 
+	LAPACK_dstebz(&range, &order, &tempn, &vl, &vu, &il, &iu, &abstol, tempAlpha, tempBeta, &m, &nsplit, w, iblock, isplit, work, iwork, &info);
 	for (int j = 0; j < eigCheck; j++) {
 		currentCullum->push_back(w[j]);
 	}
@@ -305,7 +305,7 @@ bool CullumDevice(int i, float* aAlpha, float*aBeta, double* tempAlpha, double* 
 		tempBeta[j] = (double)aBeta[j];
 	}
 
-	dstebz_(&range, &order, &tempn, &vl, &vu, &il, &iu, &abstol, tempAlpha, tempBeta, &m, &nsplit, w, iblock, isplit, work, iwork, &info, 1, 1); 
+	LAPACK_dstebz(&range, &order, &tempn, &vl, &vu, &il, &iu, &abstol, tempAlpha, tempBeta, &m, &nsplit, w, iblock, isplit, work, iwork, &info);
 	doubleVector* currentRitz = new doubleVector();
 	doubleVector acceptedEigVals;
 	boolVector duplicates;
