@@ -423,12 +423,12 @@ void lanczos(int p_nMatrixDimension, dim3 gridDim, dim3 blockDim,
        
             // to do: write code to free memory before allocating for the next iterations.. 
 
-            cublasAlloc(p_nMatrixDimension * (maxIterationsThatFitGPU+ 1), sizeof(float), (void**)&d_aaDMatrixV);
-            cublasAlloc(p_nMatrixDimension, sizeof(float), (void**)&d_aVectorZ);
-            cublasAlloc(p_nMatrixDimension, sizeof(float), (void**)&d_aVectorQQ);
-            cublasAlloc(p_nMatrixDimension, sizeof(float), (void**)&d_aVectorQQPrev);
-            cublasAlloc(p_nMatrixDimension, sizeof(float), (void**)&d_aVectorT1);
-            cublasAlloc(p_nMatrixDimension, sizeof(float), (void**)&d_aVectorT2);
+            cudaMalloc((void**)&d_aaDMatrixV, p_nMatrixDimension * (maxIterationsThatFitGPU+ 1) * sizeof(float));
+            cudaMalloc((void**)&d_aVectorZ, p_nMatrixDimension * sizeof(float));
+            cudaMalloc((void**)&d_aVectorQQ, p_nMatrixDimension * sizeof(float));
+            cudaMalloc((void**)&d_aVectorQQPrev, p_nMatrixDimension * sizeof(float));
+            cudaMalloc((void**)&d_aVectorT1, p_nMatrixDimension * sizeof(float));
+            cudaMalloc((void**)&d_aVectorT2, p_nMatrixDimension * sizeof(float));
 
             cudaMalloc((void**)&devVector, p_nMatrixDimension * sizeof(float));
 
